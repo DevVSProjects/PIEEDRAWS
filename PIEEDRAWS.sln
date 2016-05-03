@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PIEEDRAWS", "PIEEDRAWS\PIEEDRAWS.csproj", "{64489627-4850-4B3F-9033-35C8AE7184BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connection", "Connection\Connection.csproj", "{FBB72512-6F4C-48B4-B256-4EFA16C721F3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{64489627-4850-4B3F-9033-35C8AE7184BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64489627-4850-4B3F-9033-35C8AE7184BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64489627-4850-4B3F-9033-35C8AE7184BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64489627-4850-4B3F-9033-35C8AE7184BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBB72512-6F4C-48B4-B256-4EFA16C721F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBB72512-6F4C-48B4-B256-4EFA16C721F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBB72512-6F4C-48B4-B256-4EFA16C721F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBB72512-6F4C-48B4-B256-4EFA16C721F3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
