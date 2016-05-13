@@ -22,7 +22,7 @@ namespace PIEEDRAWS.WebServices
     {
 
         [WebMethod]
-        public bool AutenticaUser(string usuario, string password, ref int _resultado, ref string _mensaje)
+        public DataSet AutenticaUser(string usuario, string password, ref int _resultado, ref string _mensaje)
         {
             DataSet result =  new DataSet();
             SqlParameter[] parametros = new SqlParameter[4];
@@ -54,17 +54,8 @@ namespace PIEEDRAWS.WebServices
             }
             catch (Exception e)
             {
-                return false;
             }
-
-            if (_resultado != 1)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+                return result;
         }
     }
 }
