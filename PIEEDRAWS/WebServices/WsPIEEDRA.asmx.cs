@@ -68,9 +68,23 @@ namespace PIEEDRAWS.WebServices
         }
 
 
-
+        /// <summary>
+        /// Web Method para registrar un usuario y para asignarle un token
+        /// </summary>
+        /// <param name="usuario"></param>
+        /// <param name="password"></param>
+        /// <param name="email"></param>
+        /// <param name="nombre"></param>
+        /// <param name="apellidos"></param>
+        /// <param name="ciudad"></param>
+        /// <param name="genero"></param>
+        /// <param name="atencion"></param>
+        /// <param name="ambito"></param>
+        /// <param name="_resultado"></param>
+        /// <param name="_mensaje"></param>
+        /// <returns></returns>
         [WebMethod]
-        public bool RegistraUser(string usuario, string password,  string email, string nombre, string apellidos, string ciudad,
+        public bool RegistraUser(string usuario, string password, string email, string nombre, string apellidos, string ciudad,
                                     string genero, string atencion, string ambito, ref int _resultado, ref string _mensaje)
         {
             bool resReg = false;
@@ -82,7 +96,7 @@ namespace PIEEDRAWS.WebServices
             parametros[1] = SqlHelper.CreateParameter("@Contraseña", password, SqlDbType.VarChar, ParameterDirection.Input,
                 300);
             //parametros[2] = SqlHelper.CreateParameter("@ConfContraseña", conpassword, SqlDbType.VarChar, ParameterDirection.Input,
-                //20);
+            //20);
             parametros[2] = SqlHelper.CreateParameter("@EMail", email, SqlDbType.VarChar, ParameterDirection.Input,
                 50);
             parametros[3] = SqlHelper.CreateParameter("@Nombre", nombre, SqlDbType.VarChar, ParameterDirection.Input,
@@ -132,5 +146,111 @@ namespace PIEEDRAWS.WebServices
             }
             return resReg;
         }
+
+        [WebMethod]
+        public bool RegistraHistorico(string usuario, string usuariored, string ip, string estacion, string accion, ref int _resultado, ref string _mensaje)
+        {
+            bool resRegH = false;
+            DataSet result = new DataSet();
+            SqlParameter[] parametros = new SqlParameter[7];
+
+            parametros[0] = SqlHelper.CreateParameter("@Usuario", usuario, SqlDbType.VarChar, ParameterDirection.Input,
+                20);
+            parametros[1] = SqlHelper.CreateParameter("@UsuarioRed", usuariored, SqlDbType.VarChar, ParameterDirection.Input,
+                300);
+            parametros[2] = SqlHelper.CreateParameter("@Ip", ip, SqlDbType.VarChar, ParameterDirection.Input,
+                50);
+            parametros[3] = SqlHelper.CreateParameter("@Estacion", estacion, SqlDbType.VarChar, ParameterDirection.Input,
+                80);
+            parametros[4] = SqlHelper.CreateParameter("@Accion", accion, SqlDbType.VarChar, ParameterDirection.Input,
+                80);
+            parametros[5] = SqlHelper.CreateParameter("@Resultado", SqlDbType.Int, ParameterDirection.Output,
+                8);
+            parametros[6] = SqlHelper.CreateParameter("@Mensaje", SqlDbType.VarChar, ParameterDirection.Output,
+                100);
+
+            SqlConnection con = new SqlConnection();
+            string strincon = System.Configuration.ConfigurationManager.ConnectionStrings["PIEEDRAConnectionString"].ConnectionString;
+            con.ConnectionString = strincon;
+
+            try
+            {
+                if (con.State == System.Data.ConnectionState.Closed)
+                {
+                    result = SqlHelperPlus.ExecuteDatasetPlus(con, CommandType.StoredProcedure, "RegistraHistoricoIngreso",
+                        parametros);
+                    _resultado = Convert.ToInt32(parametros[5].Value);
+                    _mensaje = parametros[6].Value.ToString();
+
+                }
+            }
+            catch (Exception e)
+            {
+                _resultado = 0;
+                _mensaje = "Error al procesar la solicitud, favor de contactar al Administrador";
+            }
+            if (_resultado == 1)
+            {
+                resRegH = true;
+            }
+            else if (_resultado == 0)
+            {
+                resRegH = false;
+            }
+            return resRegH;
+        }
+
+        [WebMethod]
+        public bool AutenticaToken(string usuario, string token, string bandera, ref int _resultado, ref string _mensaje)
+        {
+            bool res = false;
+            DataSet result =  new DataSet();
+            SqlParameter[] parametros = new SqlParameter[5];
+
+            parametros[0] = SqlHelper.CreateParameter("@Usuario", usuario, SqlDbType.VarChar, ParameterDirection.Input,
+                20);
+            parametros[1] = SqlHelper.CreateParameter("@Token", token, SqlDbType.VarChar, ParameterDirection.Input,
+                300);
+            parametros[2] = SqlHelper.CreateParameter("@Bandera", bandera, SqlDbType.VarChar, ParameterDirection.Input,
+                300);
+            parametros[3] = SqlHelper.CreateParameter("@Resultado", SqlDbType.Int, ParameterDirection.Output,
+                8);
+            parametros[4] = SqlHelper.CreateParameter("@Mensaje", SqlDbType.VarChar, ParameterDirection.Output,
+                100);
+
+            SqlConnection con = new SqlConnection();
+            string strincon = System.Configuration.ConfigurationManager.ConnectionStrings["PIEEDRAConnectionString"].ConnectionString;
+            con.ConnectionString = strincon;
+            SqlCommand cmd = null;
+
+            try
+            {
+                if (con.State == System.Data.ConnectionState.Closed)
+                {
+                    result = SqlHelperPlus.ExecuteDatasetPlus(con, CommandType.StoredProcedure, "ValidaToken",
+                        parametros);
+                    _resultado = Convert.ToInt32(parametros[3].Value);
+                    _mensaje = parametros[4].Value.ToString();
+
+                }
+            }
+
+            catch (Exception e)
+            {
+                _resultado = 0;
+                _mensaje = "Error al procesar la solicitud, favor de contactar al Administrador";
+            }
+
+            if (_resultado == 1)
+            {
+                res = true;
+            }
+            else if (_resultado == 0)
+            {
+                res = false;
+            }
+            return res;
+        }
     }
 }
+
