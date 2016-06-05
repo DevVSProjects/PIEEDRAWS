@@ -201,11 +201,11 @@ namespace PIEEDRAWS.WebServices
         }
 
         [WebMethod]
-        public bool AutenticaToken(string usuario, string token, string bandera, ref int _resultado, ref string _mensaje)
+        public bool AutenticaToken(string usuario, string token, string bandera, string modulo, ref int _resultado, ref string _mensaje)
         {
             bool res = false;
             DataSet result =  new DataSet();
-            SqlParameter[] parametros = new SqlParameter[5];
+            SqlParameter[] parametros = new SqlParameter[6];
 
             parametros[0] = SqlHelper.CreateParameter("@Usuario", usuario, SqlDbType.VarChar, ParameterDirection.Input,
                 20);
@@ -213,9 +213,11 @@ namespace PIEEDRAWS.WebServices
                 300);
             parametros[2] = SqlHelper.CreateParameter("@Bandera", bandera, SqlDbType.VarChar, ParameterDirection.Input,
                 300);
-            parametros[3] = SqlHelper.CreateParameter("@Resultado", SqlDbType.Int, ParameterDirection.Output,
+            parametros[3] = SqlHelper.CreateParameter("@Modulo", modulo, SqlDbType.VarChar, ParameterDirection.Input,
+                300);          
+            parametros[4] = SqlHelper.CreateParameter("@Resultado", SqlDbType.Int, ParameterDirection.Output,
                 8);
-            parametros[4] = SqlHelper.CreateParameter("@Mensaje", SqlDbType.VarChar, ParameterDirection.Output,
+            parametros[5] = SqlHelper.CreateParameter("@Mensaje", SqlDbType.VarChar, ParameterDirection.Output,
                 100);
 
             SqlConnection con = new SqlConnection();
@@ -229,8 +231,8 @@ namespace PIEEDRAWS.WebServices
                 {
                     result = SqlHelperPlus.ExecuteDatasetPlus(con, CommandType.StoredProcedure, "ValidaToken",
                         parametros);
-                    _resultado = Convert.ToInt32(parametros[3].Value);
-                    _mensaje = parametros[4].Value.ToString();
+                    _resultado = Convert.ToInt32(parametros[4].Value);
+                    _mensaje = parametros[5].Value.ToString();
 
                 }
             }
