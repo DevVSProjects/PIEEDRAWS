@@ -253,6 +253,59 @@ namespace PIEEDRAWS.WebServices
             }
             return res;
         }
+
+        [WebMethod]
+        public bool CambContr(int accion, string email, string usuario, string password, ref int _resultado, ref string _mensaje)
+        {
+            bool res = false;
+            DataSet result = new DataSet();
+            SqlParameter[] parametros = new SqlParameter[6];
+
+            parametros[0] = SqlHelper.CreateParameter("@Accion", accion, SqlDbType.Int, ParameterDirection.Input,
+                8);
+            parametros[1] = SqlHelper.CreateParameter("@Email", email, SqlDbType.VarChar, ParameterDirection.Input,
+                40);
+            parametros[2] = SqlHelper.CreateParameter("@Usuario", usuario, SqlDbType.VarChar, ParameterDirection.Input,
+                30);
+            parametros[3] = SqlHelper.CreateParameter("@Contrasena", password, SqlDbType.VarChar, ParameterDirection.Input,
+                300);
+            parametros[4] = SqlHelper.CreateParameter("@Resultado", SqlDbType.Int, ParameterDirection.Output,
+                8);
+            parametros[5] = SqlHelper.CreateParameter("@Mensaje", SqlDbType.VarChar, ParameterDirection.Output,
+                100);
+
+            SqlConnection con = new SqlConnection();
+            string strincon = System.Configuration.ConfigurationManager.ConnectionStrings["PIEEDRAConnectionString"].ConnectionString;
+            con.ConnectionString = strincon;
+            SqlCommand cmd = null;
+
+            try
+            {
+                if (con.State == System.Data.ConnectionState.Closed)
+                {
+                    result = SqlHelperPlus.ExecuteDatasetPlus(con, CommandType.StoredProcedure, "CombiaPass",
+                        parametros);
+                    _resultado = Convert.ToInt32(parametros[4].Value);
+                    _mensaje = parametros[5].Value.ToString();
+
+                }
+            }
+            catch (Exception e)
+            {
+                _resultado = 0;
+                _mensaje = "Error al procesar la solicitud, favor de contactar al Administrador";
+            }
+
+            if (_resultado == 1)
+            {
+                res = true;
+            }
+            else if (_resultado == 0)
+            {
+                res = false;
+            }
+            return res;
+        }
     }
 }
 
